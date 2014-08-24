@@ -1,2 +1,3 @@
 *.pdb
-Tick-Tac-Toe/obj/Release/Tick-Tac-Toe.exe
+Tick-Tac-Toe/obj/*
+Tick-Tac-Toe/bin/*
