@@ -15,7 +15,7 @@ namespace Tick_Tac_Toe
             bool IComputerPlayer = true;
             bool valid = false;
             Console.Write("Do you want to play the computer? Use y or n:");
-            var ComputerPlayer = Console.ReadKey().KeyChar.ToString().ToUpper(); 
+            var ComputerPlayer = Console.ReadKey().KeyChar.ToString().ToUpper();
             do
             {
                 Console.Clear();
@@ -69,53 +69,24 @@ namespace Tick_Tac_Toe
                 else
                 {
 
-
-
-
                     Console.WriteLine("Where would you like to play? Use: Q,W,E  A,S,D  Z,X,C");
 
 
-                    var UserInput = ConsoleKey.Q;
+                    var UserInput = new Point(0,0);
                     var CurrentSymbol = MyEngine.isXTurn ? 0 : 1;
                     if (MyEngine.isXTurn && IComputerPlayer)
                     {
                         Thread.Sleep(500);
-                        //UserInput = DumbComputer();
-                        var ComputerMove = TicTacToePlayer.SmartComputer(MyEngine.CurrentBoardState());
-                        UserInput = MapBoardLocationToConsoleKey(ComputerMove.row, ComputerMove.column);
-                            
+                        UserInput = TicTacToePlayer.SmartComputer(MyEngine.CurrentBoardState());
                     }
                     else
                     {
-                        UserInput = Console.ReadKey(true).Key;
+                        UserInput = MapConsoleKeyToBoardLocation(Console.ReadKey(true).Key);
                     }
-                    bool GoodMove = false;
-                    if (UserInput == ConsoleKey.Q)
-                    { GoodMove = MyEngine.TryMove(0, 0, CurrentSymbol); }
-                    if (UserInput == ConsoleKey.W)
-                    { GoodMove = MyEngine.TryMove(0, 1, CurrentSymbol); }
-                    if (UserInput == ConsoleKey.E)
-                    { GoodMove = MyEngine.TryMove(0, 2, CurrentSymbol); }
-                    if (UserInput == ConsoleKey.A)
-                    { GoodMove = MyEngine.TryMove(1, 0, CurrentSymbol); }
-                    if (UserInput == ConsoleKey.S)
-                    { GoodMove = MyEngine.TryMove(1, 1, CurrentSymbol); }
-                    if (UserInput == ConsoleKey.D)
-                    { GoodMove = MyEngine.TryMove(1, 2, CurrentSymbol); }
-                    if (UserInput == ConsoleKey.Z)
-                    { GoodMove = MyEngine.TryMove(2, 0, CurrentSymbol); }
-                    if (UserInput == ConsoleKey.X)
-                    { GoodMove = MyEngine.TryMove(2, 1, CurrentSymbol); }
-                    if (UserInput == ConsoleKey.C)
-                    { GoodMove = MyEngine.TryMove(2, 2, CurrentSymbol); }
-                   
+                    MyEngine.TryMove(UserInput.row, UserInput.column, CurrentSymbol);
                 }
             } while (true);
         }
-
-       
-
-
 
         static ConsoleKey[][] keyMap = new[]{
                 new [] {ConsoleKey.Q, ConsoleKey.W, ConsoleKey.E},
@@ -126,12 +97,8 @@ namespace Tick_Tac_Toe
         {
             return keyMap[i][j];
         }
-        public static Point MapLocationToPoint(int r, int c)
-        {
-            return new Point(r, c);
-        }
 
-        private static Tuple<int, int> MapConsoleKeyToBoardLocation(ConsoleKey key)
+        private static Point MapConsoleKeyToBoardLocation(ConsoleKey key)
         {
 
             for (int i = 0; i < keyMap.Length; i++)
@@ -139,10 +106,10 @@ namespace Tick_Tac_Toe
                 for (int j = 0; j < keyMap[i].Length; j++)
                 {
                     if (keyMap[i][j] == key)
-                        return Tuple.Create(i, j);
+                        return new Point(i, j);
                 }
             }
-            return Tuple.Create(0, 0);
+            return new Point(0, 0);
         }
 
 
@@ -190,6 +157,6 @@ namespace Tick_Tac_Toe
 
             return 'b';
         }
-        
+
     }
 }
