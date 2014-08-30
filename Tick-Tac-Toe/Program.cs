@@ -11,13 +11,7 @@ namespace Tick_Tac_Toe
     {
         static void Main()
         {
-            bool XTurn = false;
-            var myArray = new[]{
-		        new []{2,2,2},
-		        new []{2,2,2},
-		        new []{2,2,2}
-	
-	            };
+            TTTEngine MyEngine = new TTTEngine(false);
             bool IComputerPlayer = true;
             bool valid = false;
             Console.Write("Do you want to play the computer? Use y or n:");
@@ -48,8 +42,8 @@ namespace Tick_Tac_Toe
             do
             {
                 Console.CursorTop = CurrentPosition;
-                PrintBoard(myArray);
-                if (IsGameDraw(myArray))
+                PrintBoard(MyEngine.CurrentBoardState());
+                if (MyEngine.IsGameDraw())
                 {
                     Console.WriteLine("You Both Lose!!!! Press any key to play again".PadRight(100));
                     var PlayAgain = Console.ReadKey(true);
@@ -57,9 +51,9 @@ namespace Tick_Tac_Toe
                     Main();
                     return;
                 }
-                if (IsGameOver(myArray))
+                if (MyEngine.IsGameOver())
                 {
-                    if (XTurn)
+                    if (MyEngine.isXTurn)
                     {
                         Console.WriteLine("X WINS!!!! Press any key to play again".PadRight(100));
                     }
@@ -82,12 +76,14 @@ namespace Tick_Tac_Toe
 
 
                     var UserInput = ConsoleKey.Q;
-                    var CurrentSymbol = XTurn ? 0 : 1;
-                    if (XTurn && IComputerPlayer)
+                    var CurrentSymbol = MyEngine.isXTurn ? 0 : 1;
+                    if (MyEngine.isXTurn && IComputerPlayer)
                     {
                         Thread.Sleep(500);
                         //UserInput = DumbComputer();
-                        UserInput = SmartComputer(myArray);
+                        var ComputerMove = SmartComputer(MyEngine.CurrentBoardState());
+                        UserInput = MapBoardLocationToConsoleKey(ComputerMove.row, ComputerMove.column);
+                            
                     }
                     else
                     {
@@ -95,33 +91,29 @@ namespace Tick_Tac_Toe
                     }
                     bool GoodMove = false;
                     if (UserInput == ConsoleKey.Q)
-                    { GoodMove = CheckSpot(ref  myArray[0][0], CurrentSymbol); }
+                    { GoodMove = MyEngine.TryMove(0, 0, CurrentSymbol); }
                     if (UserInput == ConsoleKey.W)
-                    { GoodMove = CheckSpot(ref  myArray[0][1], CurrentSymbol); }
+                    { GoodMove = MyEngine.TryMove(0, 1, CurrentSymbol); }
                     if (UserInput == ConsoleKey.E)
-                    { GoodMove = CheckSpot(ref  myArray[0][2], CurrentSymbol); }
+                    { GoodMove = MyEngine.TryMove(0, 2, CurrentSymbol); }
                     if (UserInput == ConsoleKey.A)
-                    { GoodMove = CheckSpot(ref  myArray[1][0], CurrentSymbol); }
+                    { GoodMove = MyEngine.TryMove(1, 0, CurrentSymbol); }
                     if (UserInput == ConsoleKey.S)
-                    { GoodMove = CheckSpot(ref  myArray[1][1], CurrentSymbol); }
+                    { GoodMove = MyEngine.TryMove(1, 1, CurrentSymbol); }
                     if (UserInput == ConsoleKey.D)
-                    { GoodMove = CheckSpot(ref  myArray[1][2], CurrentSymbol); }
+                    { GoodMove = MyEngine.TryMove(1, 2, CurrentSymbol); }
                     if (UserInput == ConsoleKey.Z)
-                    { GoodMove = CheckSpot(ref  myArray[2][0], CurrentSymbol); }
+                    { GoodMove = MyEngine.TryMove(2, 0, CurrentSymbol); }
                     if (UserInput == ConsoleKey.X)
-                    { GoodMove = CheckSpot(ref  myArray[2][1], CurrentSymbol); }
+                    { GoodMove = MyEngine.TryMove(2, 1, CurrentSymbol); }
                     if (UserInput == ConsoleKey.C)
-                    { GoodMove = CheckSpot(ref  myArray[2][2], CurrentSymbol); }
-                    if (GoodMove)
-                    {
-                        XTurn = !XTurn;
-                    }
-
+                    { GoodMove = MyEngine.TryMove(2, 2, CurrentSymbol); }
+                   
                 }
             } while (true);
         }
 
-        private static ConsoleKey SmartComputer(int[][] board)
+        private static Point SmartComputer(int[][] board)
         {
             Random rnd = new Random();
             int HowManyPlaysForO = 0;
@@ -142,25 +134,25 @@ namespace Tick_Tac_Toe
                 }
             }
             if (HowManyPlaysForO + HowManyPlaysForX == 0)
-                return ConsoleKey.S;
+                return new Point(1,1);
 
             if (HowManyPlaysForO + HowManyPlaysForX == 1)
             {
                 if (CenterIsOccupied(board))
                 {
-                    var RandomArray = new[] { ConsoleKey.Q, ConsoleKey.E, ConsoleKey.Z, ConsoleKey.C };
+                    var RandomArray = new[] { new Point(0, 0), new Point(0, 2), new Point(2, 0), new Point(2, 2) };
                     return RandomArray[rnd.Next(RandomArray.Length - 1)];
 
                 }
                 if (CornerIsOccupied(board))
                 {
-                    return ConsoleKey.S;
+                    return new Point(1, 1);
                 }
                 if (SideIsOccupied(board))
                 {
                     // var RandomArray = new[] { ConsoleKey.W, ConsoleKey.A, ConsoleKey.D, ConsoleKey.X };
                     // return RandomArray[rnd.Next(RandomArray.Length - 1)]; 
-                    return ConsoleKey.S;
+                    return new Point(1, 1);
                 }
             }
 
@@ -186,7 +178,7 @@ namespace Tick_Tac_Toe
                     {
                         if (board[i][j] == 2)
                         {
-                            return MapBoardLocationToConsoleKey(i, j);
+                            return new Point(i, j);
                         }
                     }
                 }
@@ -213,7 +205,7 @@ namespace Tick_Tac_Toe
                     {
                         if (board[j][i] == 2)
                         {
-                            return MapBoardLocationToConsoleKey(j, i);
+                            return new Point(j, i);
                         }
                     }
                 }
@@ -255,7 +247,7 @@ namespace Tick_Tac_Toe
                                   select location).FirstOrDefault();
                 if (spotToPlay != null)
                 {
-                    return MapBoardLocationToConsoleKey(spotToPlay.row, spotToPlay.col);
+                    return new Point(spotToPlay.row, spotToPlay.col);
                 }
             }
             // 2 in a front diag, play missing spot
@@ -267,7 +259,7 @@ namespace Tick_Tac_Toe
                 if (spotToPlay != null)
                 {
 
-                    return MapBoardLocationToConsoleKey(spotToPlay.row, spotToPlay.col);
+                    return new Point(spotToPlay.row, spotToPlay.col);
 
                 }
 
@@ -286,73 +278,73 @@ namespace Tick_Tac_Toe
                                      select 0).Count();
                 if (EdgePlayCount == 0 && board[1][1] == 0)
                 {
-                    return PlayAvalibleEdge(board).Value;
+                    return PlayAvalibleEdge(board);
                 }
                 if (EdgePlayCount == 0 && board[1][1] == 1)
                 {
-                    return PlayAvalibleCorner(board).Value;
+                    return PlayAvalibleCorner(board);
                 }
-                return PlayAvalibleEdge(board).Value;
+                return PlayAvalibleEdge(board);
             }
             var play = PlayAvalibleEdge(board);
 
 
             if (play != null)
             {
-                return play.Value;
+                return play;
             }
 
             play = PlayAvalibleCorner(board);
 
             if (play != null)
             {
-                return play.Value;
+                return play;
             }
             return DumbComputer();
 
         }
 
-        private static ConsoleKey? PlayAvalibleEdge(int[][] board)
+        private static Point PlayAvalibleEdge(int[][] board)
         {
             if (board[0][1] == 2)
             {
-                return MapBoardLocationToConsoleKey(0, 1);
+                return new Point(0, 1);
             }
             if (board[1][2] == 2)
             {
-                return MapBoardLocationToConsoleKey(1, 2);
+                return new Point(1, 2);
             }
             if (board[1][0] == 2)
             {
-                return MapBoardLocationToConsoleKey(1, 0);
+                return new Point(1, 0);
             }
             if (board[2][1] == 2)
             {
-                return MapBoardLocationToConsoleKey(2, 1);
+                return new Point(2, 1);
             }
 
-            return new Nullable<ConsoleKey>();
+            return null;
         }
-        private static ConsoleKey? PlayAvalibleCorner(int[][] board)
+        private static Point PlayAvalibleCorner(int[][] board)
         {
             if (board[0][0] == 2)
             {
-                return MapBoardLocationToConsoleKey(0, 0);
+                return new Point(0, 0);
             }
             if (board[0][2] == 2)
             {
-                return MapBoardLocationToConsoleKey(0, 2);
+                return new Point(0, 2);
             }
             if (board[2][0] == 2)
             {
-                return MapBoardLocationToConsoleKey(2, 0);
+                return new Point(2, 0);
             }
             if (board[2][2] == 2)
             {
-                return MapBoardLocationToConsoleKey(2, 2);
+                return new Point(2, 2);
             }
 
-            return new Nullable<ConsoleKey>();
+            return null;
         }
 
         static ConsoleKey[][] keyMap = new[]{
@@ -363,6 +355,10 @@ namespace Tick_Tac_Toe
         private static ConsoleKey MapBoardLocationToConsoleKey(int i, int j)
         {
             return keyMap[i][j];
+        }
+        public static Point MapLocationToPoint(int r, int c)
+        {
+            return new Point(r, c);
         }
 
         private static Tuple<int, int> MapConsoleKeyToBoardLocation(ConsoleKey key)
@@ -394,11 +390,13 @@ namespace Tick_Tac_Toe
             return board[1][1] != 2;
         }
 
-        private static ConsoleKey DumbComputer()
+        private static Point DumbComputer()
         {
             Random rnd = new Random();
             var RandomNumber = rnd.Next(9);
-            var keys = new[] { ConsoleKey.Q, ConsoleKey.W, ConsoleKey.E, ConsoleKey.A, ConsoleKey.S, ConsoleKey.D, ConsoleKey.Z, ConsoleKey.X, ConsoleKey.C };
+            var keys = new[] { new Point(0, 0), new Point(0, 1), new Point(0, 2),
+                                new Point(1,0), new Point(1,1), new Point(1,2),
+                                new Point(2,0), new Point(2,1), new Point(2,2)};
             return keys[RandomNumber];
 
         }
@@ -447,45 +445,6 @@ namespace Tick_Tac_Toe
 
             return 'b';
         }
-        static bool IsGameOver(int[][] board)
-        {
-            if (board.Any(Row => Row.All(Col => Col == 0)))
-                return true;
-            if (board.Any(Row => Row.All(Col => Col == 1)))
-                return true;
-            for (int i = 0; i < 3; i++)
-            {
-                if (board.All(Row => Row[i] == 0))
-                    return true;
-                if (board.All(Row => Row[i] == 1))
-                    return true;
-            }
-            if (board[0][0] != 2 && board[0][0] == board[1][1] && board[0][0] == board[2][2])
-            {
-                return true;
-            }
-            if (board[0][2] != 2 && board[0][2] == board[1][1] && board[0][2] == board[2][0])
-            {
-                return true;
-            }
-            return false;
-        }
-        static bool CheckSpot(ref int BoardLocation, int newvalue)
-        {
-            if (BoardLocation != 2)
-                return false;
-            else
-            {
-                BoardLocation = newvalue;
-                return true;
-            }
-        }
-        static bool IsGameDraw(int[][] CheckDraw)
-        {
-            if (IsGameOver(CheckDraw) == false && CheckDraw.All(Row => Row.All(Col => Col != 2)))
-                return true;
-            return false;
-
-        }
+        
     }
 }
