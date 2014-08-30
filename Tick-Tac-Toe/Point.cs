@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Tick_Tac_Toe
 {
-    class Point
+   public class Point
     {
         public int row {get ; set;}
         public int column {get; set; }
