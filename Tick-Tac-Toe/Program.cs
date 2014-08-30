@@ -12,32 +12,7 @@ namespace Tick_Tac_Toe
         static void Main()
         {
             TTTEngine MyEngine = new TTTEngine(false);
-            bool IComputerPlayer = true;
-            bool valid = false;
-            Console.Write("Do you want to play the computer? Use y or n:");
-            var ComputerPlayer = Console.ReadKey().KeyChar.ToString().ToUpper();
-            do
-            {
-                Console.Clear();
-                if (ComputerPlayer == "Y")
-                {
-                    IComputerPlayer = true;
-                    valid = true;
-                }
-                else if (ComputerPlayer == "N")
-                {
-                    IComputerPlayer = false;
-                    valid = true;
-                }
-                else
-                {
-
-                    Console.WriteLine("Please choose either y or n!!!\tDo you want to play Kyson's Brain? Use y or n:");
-                    ComputerPlayer = Console.ReadLine().ToUpper();
-                }
-            }
-            while (!valid);
-
+            var IComputerPlayer = PlayAgainstComputer();
             var CurrentPosition = Console.CursorTop;
             do
             {
@@ -86,6 +61,36 @@ namespace Tick_Tac_Toe
                     MyEngine.TryMove(UserInput.row, UserInput.column, CurrentSymbol);
                 }
             } while (true);
+        }
+
+        private static bool PlayAgainstComputer()
+        {
+            bool IComputerPlayer = false;
+            bool valid = false;
+            Console.Write("Do you want to play the computer? Use y or n:");
+            var ComputerPlayer = Console.ReadKey().KeyChar.ToString().ToUpper();
+            do
+            {
+                Console.Clear();
+                if (ComputerPlayer == "Y")
+                {
+                    IComputerPlayer = true;
+                    valid = true;
+                }
+                else if (ComputerPlayer == "N")
+                {
+                    IComputerPlayer = false;
+                    valid = true;
+                }
+                else
+                {
+
+                    Console.WriteLine("Please choose either y or n!!!\tDo you want to play Kyson's Brain? Use y or n:");
+                    ComputerPlayer = Console.ReadLine().ToUpper();
+                }
+            }
+            while (!valid);
+            return IComputerPlayer;
         }
 
         static ConsoleKey[][] keyMap = new[]{
