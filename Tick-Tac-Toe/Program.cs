@@ -38,7 +38,7 @@ namespace Tick_Tac_Toe
                 else
                 {
 
-                    Console.WriteLine("Please choose either y or n!!!\tDo you want to play the computer? Use y or n:");
+                    Console.WriteLine("Please choose either y or n!!!\tDo you want to play Kyson's Brain? Use y or n:");
                     ComputerPlayer = Console.ReadLine().ToUpper();
                 }
             }
