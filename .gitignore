@@ -4,3 +4,6 @@ Tick-Tac-Toe/bin/*
 *.suo
 TicTacToePrettyUI/obj/*
 TicTacToeGuts/obj/*
+*.exe
+*.exe
+TicTacToePrettyUI/bin/Debug/TicTacToePrettyUI.exe

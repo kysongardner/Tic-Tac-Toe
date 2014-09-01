@@ -60,7 +60,11 @@ namespace TicTacToePrettyUI
             var Button = sender as Button;
             var Position = Button.Tag.ToString().Split(',');
             var MyPoint = new Tick_Tac_Toe.Point(Convert.ToInt32(Position[0]), Convert.ToInt32(Position[1]));
-            MyTicTacToeBoard.TryMove(MyPoint.row, MyPoint.column, 1);
+           if( MyTicTacToeBoard.TryMove(MyPoint.row, MyPoint.column, 1))
+           {
+               var ComputerMove = TicTacToePlayer.SmartComputer(MyTicTacToeBoard.CurrentBoardState());
+               MyTicTacToeBoard.TryMove(ComputerMove.row, ComputerMove.column, 0);
+           }
             UpdateGameState();
         }
        
