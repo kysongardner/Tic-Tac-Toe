@@ -20,15 +20,15 @@
                 <RowDefinition Height="99*"/>
             </Grid.RowDefinitions>
             <Button Content="New Game" Grid.Row="0" Margin="10" RenderTransformOrigin="0.591,0.93" Click="NewGameClick" />
-            <Button Content="{Binding GameState[0][0], Converter={StaticResource XAndOKey}}" Grid.Row="1" Click="TicTacClick" Tag="0,0"/>
-            <Button Content="{Binding GameState[0][1], Converter={StaticResource XAndOKey}}" Grid.Row="2" Click="TicTacClick" Tag="0,1"/>
-            <Button Content="{Binding GameState[0][2], Converter={StaticResource XAndOKey}}" Grid.Row="3" Click="TicTacClick" Tag="0,2"/>
-            <Button Content="{Binding GameState[1][0], Converter={StaticResource XAndOKey}}" Grid.Row="1" Grid.Column="1" Click="TicTacClick"  Tag="1,0"/>
-            <Button Content="{Binding GameState[1][1], Converter={StaticResource XAndOKey}}" Grid.Row="2" Grid.Column="1" Click="TicTacClick"  Tag="1,1"/>
-            <Button Content="{Binding GameState[1][2], Converter={StaticResource XAndOKey}}" Grid.Row="3" Grid.Column="1" Click="TicTacClick" Tag="1,2"/>
-            <Button Content="{Binding GameState[2][0], Converter={StaticResource XAndOKey}}" Grid.Row="1" Grid.Column="2" Click="TicTacClick" Tag="2,0"/>
-            <Button Content="{Binding GameState[2][1], Converter={StaticResource XAndOKey}}" Grid.Row="2" Grid.Column="2" Click="TicTacClick" Tag="2,1" />
-            <Button Content="{Binding GameState[2][2], Converter={StaticResource XAndOKey}}" Grid.Row="3" Grid.Column="2" Click="TicTacClick" Tag="2,2" />
+            <Button Content="{Binding GameState[0][0], Converter={StaticResource XAndOKey}}" Grid.Row="1" Click="TicTacClick" Tag="0,0" FontSize="40" FontFamily="Showcard Gothic" Background="#FFA0A0CB"/>
+            <Button Content="{Binding GameState[0][1], Converter={StaticResource XAndOKey}}" Grid.Row="2" Click="TicTacClick" Tag="0,1" FontSize="40" FontFamily="Showcard Gothic" Background="#FFA0A0CB"/>
+            <Button Content="{Binding GameState[0][2], Converter={StaticResource XAndOKey}}" Grid.Row="3" Click="TicTacClick" Tag="0,2" FontSize="40" FontFamily="Showcard Gothic" Background="#FFA0A0CB"/>
+            <Button Content="{Binding GameState[1][0], Converter={StaticResource XAndOKey}}" Grid.Row="1" Grid.Column="1" Click="TicTacClick"  Tag="1,0" FontSize="40" FontFamily="Showcard Gothic" Background="#FFA0A0CB"/>
+            <Button Content="{Binding GameState[1][1], Converter={StaticResource XAndOKey}}" Grid.Row="2" Grid.Column="1" Click="TicTacClick"  Tag="1,1" FontSize="40" FontFamily="Showcard Gothic" Background="#FFA0A0CB"/>
+            <Button Content="{Binding GameState[1][2], Converter={StaticResource XAndOKey}}" Grid.Row="3" Grid.Column="1" Click="TicTacClick" Tag="1,2" FontSize="40" FontFamily="Showcard Gothic" Background="#FFA0A0CB"/>
+            <Button Content="{Binding GameState[2][0], Converter={StaticResource XAndOKey}}" Grid.Row="1" Grid.Column="2" Click="TicTacClick" Tag="2,0" FontSize="40" FontFamily="Showcard Gothic" Background="#FFA0A0CB"/>
+            <Button Content="{Binding GameState[2][1], Converter={StaticResource XAndOKey}}" Grid.Row="2" Grid.Column="2" Click="TicTacClick" Tag="2,1" FontSize="40" FontFamily="Showcard Gothic" Background="#FFA0A0CB"/>
+            <Button Content="{Binding GameState[2][2], Converter={StaticResource XAndOKey}}" Grid.Row="3" Grid.Column="2" Click="TicTacClick" Tag="2,2" FontSize="40" FontFamily="Showcard Gothic" Background="#FFA0A0CB"/>
             <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="{Binding ReturnStatus}" VerticalAlignment="Top" Width="338" Grid.ColumnSpan="2" Height="22"></TextBlock>
         </Grid>
         <Border Visibility="{Binding IsShowingNewGameScreen}" BorderThickness="5" CornerRadius="10" Margin="5" Padding="0">
@@ -46,9 +46,9 @@
             </Border.Background>
             <Grid>
 
-                <TextBlock TextWrapping="Wrap" Text="Do you want to play a Computer or another person?" FontSize="10" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" Background="White"/>
-                <Button Content="Person" HorizontalAlignment="Center" Margin="100,50,0,0" Width="60" VerticalAlignment="Center" Click="PlayAnotherPerson"/>
-                <Button Content="Computer" HorizontalAlignment="Center" Margin="0,50,100,0" VerticalAlignment="Center" Width="60" RenderTransformOrigin="-0.325,-4.783" Click="PlayTheComputer"/>
+                <TextBlock TextWrapping="Wrap" Text="Do you want to play a Computer or another person?" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FF10FD31" FontFamily="BatangChe"/>
+                <Button Content="Person" HorizontalAlignment="Center" Margin="100,50,0,0" Width="60" VerticalAlignment="Center" Click="PlayAnotherPerson" FontFamily="Poor Richard"/>
+                <Button Content="Computer" HorizontalAlignment="Center" Margin="0,50,100,0" VerticalAlignment="Center" Width="60" RenderTransformOrigin="-0.325,-4.783" Click="PlayTheComputer" FontFamily="Poor Richard"/>
             </Grid>
         </Border>
     </Grid>
